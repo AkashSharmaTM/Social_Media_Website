@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Messaging</title>
+</head>
+<body>
+    <h2>Messaging</h2>
+    <nav>
+        <ul>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="friends.html">Friends</a></li>
+            <li><a href="messaging.html">Messaging</a></li>
+            <li><a href="members.html">Members</a></li>
+            <li><a href="../src/logout.php">Logout</a></li>
+        </ul>
+    </nav>
+    <div id="content">
+        <h3>Public Messages</h3>
+        <div id="publicMessages">
+            <!-- Public messages will be dynamically loaded here -->
+        </div>
+        <input type="text" id="publicMessage" placeholder="Post a public message...">
+        <button id="postPublicMessage">Post</button>
+        <hr>
+        <h3>Private Messages</h3>
+        <select id="friendsList">
+            <!-- Friends list will be dynamically loaded here -->
+        </select>
+        <div id="privateMessages">
+            <!-- Private messages will be dynamically loaded here -->
+        </div>
+        <input type="text" id="privateMessage" placeholder="Send a private message...">
+        <button id="sendPrivateMessage">Send</button>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function loadPublicMessages() {
+                $.get('../src/get_public_messages.php', function(data) {
+                    $('#publicMessages').html(data);
+                });
+            }
+            
+            function loadFriends() {
+                $.get('../src/get_friends.php', function(data) {
+                    $('#friendsList').html(data);
+                });
+            }
+            
+            function loadPrivateMessages(friendId) {
+                $.get('../src/get_private_messages.php', { friend_id: friendId }, function(data) {
+                    $('#privateMessages').html(data);
+                });
+            }
+            
+            loadPublicMessages();
+            loadFriends();
+            
+            $('#postPublicMessage').click(function() {
+                var message = $('#publicMessage').val();
+                $.post('../src/post_public_message.php', { message: message }, function() {
+                    loadPublicMessages();
+                    $('#publicMessage').val('');
+                });
+            });
+            
+            $('#friendsList').change(function() {
+                var friendId = $(this).val();
+                loadPrivateMessages(friendId);
+            });
+            
+            $('#sendPrivateMessage').click(function() {
+                var message = $('#privateMessage').val();
+                var friendId = $('#friendsList').val();
+                $.post('../src/send_private_message.php', { friend_id: friendId, message: message }, function() {
+                    loadPrivateMessages(friendId);
+                    $('#privateMessage').val('');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

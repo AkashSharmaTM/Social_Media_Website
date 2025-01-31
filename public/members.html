@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Member Directory</title>
+</head>
+<body>
+    <h2>Member Directory</h2>
+    <nav>
+        <ul>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="friends.html">Friends</a></li>
+            <li><a href="messaging.html">Messaging</a></li>
+            <li><a href="members.html">Members</a></li>
+            <li><a href="../src/logout.php">Logout</a></li>
+        </ul>
+    </nav>
+    <div id="content">
+        <input type="text" id="search" placeholder="Search members...">
+        <div id="memberList">
+            <!-- Member list will be dynamically loaded here -->
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function loadMembers(query = '') {
+                $.get('../src/get_members.php', { search: query }, function(data) {
+                    $('#memberList').html(data);
+                });
+            }
+            
+            $('#search').on('input', function() {
+                loadMembers($(this).val());
+            });
+            
+            loadMembers();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Login</title>
+</head>
+<body>
+    <h2>Login</h2>
+    <form action="../src/login.php" method="post">
+        <input type="text" name="username" placeholder="Username" required>
+        <div class="password-container">
+            <input type="password" name="password" id="password" placeholder="Password" required>
+        </div>
+        <button type="submit">Login</button>
+    </form>
+    <a href="signup.html">Don't have an account? Sign up here</a>
+    <script src="../public/js/scripts.js"></script>
+</body>
+</html>
